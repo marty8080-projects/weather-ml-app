@@ -1,0 +1,55 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-test-ship:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+
+    - name: Install Dependencies
+      run:  |
+        python3 -m venv flaskappenv
+        source flaskappenv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run smoke test
+      run: |
+        source flaskappenv/bin/activate
+        python3 -m unittest tests/smoke_test.py
+
+    - name: Run unit test
+      run: |
+        source flaskappenv/bin/activate
+        python3 -m unittest tests/unit_test.py
+
+    - name: Run integration test
+      run: |
+        source flaskappenv/bin/activate
+        python3 -m unittest tests/integration_test.py
+
+    - name: Docker Login
+      uses: docker/login-action@v3
+      with:
+        username: ${{  secrets.DOCKERHUB_USERNAME  }}
+        password: ${{  secrets.DOCKERHUB_TOKEN  }}
+  
+    - name: Build Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        load: true
+        tags: ${{secrets.DOCKERHUB_USERNAME}}/weather-ml-app:v1
+    
+    - name: Smoke test - container launches successfully
+      run: |
+        docker run --rm weather-ml-app:v1 echo "Container started successfully"
