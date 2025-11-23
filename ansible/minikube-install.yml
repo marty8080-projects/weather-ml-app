@@ -1,0 +1,31 @@
+- name: Install and start Minikube on Production Server
+  hosts: localhost
+  user: ubuntu
+  become: yes
+
+  tasks:
+    - name: 1. Update APT package manager
+      apt:
+        update_cache: yes
+
+    - name: 2. Install dependencies
+      apt:
+        name:
+          - curl
+          - conntrack
+        state: present
+
+    - name: 3. Download Minikube binary
+      get_url:
+        url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        dest: /home/ubuntu/minikube
+        mode: '0755'
+
+    - name: 4. Move Minikube binary
+      command: mv /home/ubuntu/minikube /usr/local/bin/minikube
+      args:
+        creates: /usr/local/bin/minikube
+
+    - name: 5. Start Minikube
+      become: no
+      command: minikube start --driver=docker

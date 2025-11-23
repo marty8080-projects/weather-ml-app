@@ -1,0 +1,35 @@
+- name: Deploy weather-ml-app to Kubernetes
+  hosts: localhost
+  user: ubuntu
+  become: no
+
+  vars:
+    k8s_dir: /home/ubuntu/weather-ml-app/k8s
+    kubeconfig_path: /home/ubuntu/.kube/config
+
+  tasks:
+    - name: 1. Apply Deployment manifest
+      command: kubectl apply -f {{ k8s_dir }}/deployment.yaml
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 2. Get Deployments
+      command: kubectl get deployments
+      register: deploy_output
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 3. Show deployment status
+      debug:
+        var: deploy_output.stdout
+
+    - name: 4. Get Pods
+      command: kubectl get pods
+      register: pod_output
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 5. Show pods
+      debug:
+        var: pod_output.stdout
+

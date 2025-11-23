@@ -1,0 +1,24 @@
+- name: Create Service for weather-ml-app
+  hosts: localhost
+  user: ubuntu
+  become: no
+
+  vars:
+    k8s_dir: /home/ubuntu/weather-ml-app/k8s
+    kubeconfig_path: /home/ubuntu/.kube/config
+
+  tasks:
+    - name: 1. Apply Service manifest
+      command: kubectl apply -f {{ k8s_dir }}/service.yaml
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 2. Get Services
+      command: kubectl get services
+      register: svc_output
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 3. Show services
+      debug:
+        var: svc_output.stdout
