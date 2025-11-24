@@ -8,7 +8,8 @@ app = Flask(__name__)
 weather_classes = ['clear', 'cloudy', 'drizzly', 'foggy', 'hazey', 'misty', 'rainy', 'smokey', 'thunderstorm']
 
 def load_model(model_path = 'model/model.pkl'):
-	return pickle.load(open(model_path, 'rb'))
+        with open(model_path, 'rb') as f:
+                return pickle.load(f)
 
 def classify_weather(features):
 	model = load_model()
