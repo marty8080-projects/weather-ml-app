@@ -23,7 +23,6 @@ class TestModelAppIntegration(unittest.TestCase):
 		}
 
 		response = self.client.post('/', data=form_data)
-	
 		# Complete below
 		# Ensure that the result page (response.data) should include a weather prediction
 		self.assertIn(b'Weather', response.data)
