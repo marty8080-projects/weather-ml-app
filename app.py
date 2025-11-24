@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 import pickle
 import numpy as np
 import time
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -36,12 +37,17 @@ def home():
 			snow = float(request.form.get('snow', 0) or 0)
 			clouds = float(request.form.get('clouds', 0) or 0)
 
-			features = np.array([
-				temperature, pressure, humidity,
-				wind_speed, wind_deg, rain_1h,
-				rain_3h, snow, clouds
-			]).reshape(1, -1)
-
+			features = pd.DataFrame([{
+    				"temp": temperature,
+				"pressure": pressure,
+    				"humidity": humidity,
+	    			"wind_speed": wind_speed,
+    				"wind_deg": wind_deg,
+    				"rain_1h": rain_1h,
+		    		"rain_3h": rain_3h,
+		    		"snow_3h": snow,
+		    		"clouds_all": clouds
+			}])	
 			
 			prediction, latency = classify_weather(features)
 

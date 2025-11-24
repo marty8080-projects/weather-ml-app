@@ -1,6 +1,6 @@
 import unittest
 from app import app  # Import your Flask app instance
-
+import numpy as np
 
 class TestModelAppIntegration(unittest.TestCase):
 
@@ -22,15 +22,18 @@ class TestModelAppIntegration(unittest.TestCase):
 			'clouds': '20'             # %
 		}
 
+
 		response = self.client.post('/', data=form_data)
 		# Complete below
 		# Ensure that the result page (response.data) should include a weather prediction
+
 		self.assertIn(b'Weather', response.data)
 	
 		# Ensure that the result page should include a prediction time
 		self.assertIn(b'Prediction time', response.data)
 
 		html_text = response.data.decode('utf-8').lower()
+		
 		valid_classes = [
 			'clear', 'cloudy', 'drizzly', 'foggy', 'hazey',
 			'misty', 'rainy', 'smokey', 'thunderstorm'
