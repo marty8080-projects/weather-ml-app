@@ -34,17 +34,16 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v2
 
-    
-    # Set up kubectl
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v3
-      with:
-        kubeconfig: ${{ kubeconfig_path }}
+#    # Set up kubectl
+#    - name: Set up kubectl
+#      uses: azure/setup-kubectl@v3
+#      with:
+#        kubeconfig: ${{ kubeconfig_path }}
 
     # Rolling updates
     - name: Deploy to Kubernetes (Rolling Update)
       run: |
         kubectl set image deployment/weather-ml-app \
-          weather-ml-app=${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:latest
+          weather-ml-app=${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v2
 
         kubectl rollout status deployment/weather-ml-app --timeout=60s
