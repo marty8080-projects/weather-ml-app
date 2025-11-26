@@ -50,4 +50,4 @@ jobs:
     
     - name: Smoke test - container launches successfully
       run: |
-        docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v1 echo "Container started successfully"
+        docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v2 echo "Container started successfully"
