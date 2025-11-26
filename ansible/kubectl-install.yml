@@ -1,0 +1,20 @@
+- name: Install kubectl on Production Server
+  hosts: localhost
+  user: ubuntu
+  become: yes
+
+  tasks:
+    - name: 1. Update APT package manager
+      apt:
+        update_cache: yes
+
+    - name: 2. Install snapd (if not already installed)
+      apt:
+        name: snapd
+        state: present
+
+    - name: 3. Install kubectl via snap
+      snap:
+        name: kubectl
+        classic: true
+        state: present

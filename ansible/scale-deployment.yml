@@ -1,0 +1,35 @@
+- name: Scale weather-ml-app deployment for rolling updates
+  hosts: localhost
+  user: ubuntu
+  become: no
+
+  vars:
+    deployment_name: weather-ml-app
+    replicas: 4
+    kubeconfig_path: /home/ubuntu/.kube/config
+
+  tasks:
+    - name: 1. Scale the deployment
+      command: kubectl scale deployment/{{ deployment_name }} --replicas={{ replicas }}
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 2. Get deployments
+      command: kubectl get deployments
+      register: deploys
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 3. Show deployments
+      debug:
+        var: deploys.stdout
+
+    - name: 4. Get pods
+      command: kubectl get pods
+      register: pods
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+
+    - name: 5. Show pods
+      debug:
+        var: pods.stdout
