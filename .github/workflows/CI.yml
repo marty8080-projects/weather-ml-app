@@ -46,7 +46,7 @@ jobs:
       with:
         context: .
         load: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v1
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v2
     
     - name: Smoke test - container launches successfully
       run: |
