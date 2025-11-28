@@ -1,0 +1,3 @@
+flaskappenv/
+__pycache__/
+*.pyc
