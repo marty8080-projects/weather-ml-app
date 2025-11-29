@@ -46,12 +46,12 @@ jobs:
       with:
         context: .
         load: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v2
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v1
 
     - name: Smoke test - container launches successfully
       run: |
-        docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v2 echo "Container started successfully"
+        docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v1 echo "Container started successfully"
 
     - name: Push Docker Image to Docker Hub
       run: |
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v2
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/weather-ml-app:v1
