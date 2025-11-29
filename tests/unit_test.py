@@ -1,5 +1,5 @@
 import unittest
-from app import app, classify_weather, load_model
+from app import app, classify_weather, load_model, weather_classes
 import numpy as np
 
 class TestUnit(unittest.TestCase):
@@ -35,22 +35,21 @@ class TestUnit(unittest.TestCase):
 	def test_clear_classification_output(self):
 		test_input = np.array([269.686,1002,78,0,23,0,0,0,0]).reshape(1,-1)
 		class_result, _ = classify_weather(test_input) 
-		# Ensure that 'clear' class is returned
-		self.assertEqual(class_result, 'clear')
+		# Checking against the 'clear' class at index[0] 
+		self.assertEqual(class_result, weather_classes[0])
 
 	def test_rainy_classification_output(self):
 		test_input = np.array([279.626,998,99,1,314,0.3,0,0,88]).reshape(1,-1)
 		class_result, _ = classify_weather(test_input) 
-		# Ensure that 'rainy' class is returned
-		self.assertEqual(class_result, 'rainy')
+		# Checking against the 'rainy'/'rain' class at index [6]
+		self.assertEqual(class_result, weather_classes[6])
 
 	def test_cloudy_classification_output(self):
 
 		test_input = np.array([291.15,1028,61,1,260,0,0,0,75]).reshape(1,-1)
 		class_result, _ = classify_weather(test_input) 
-
-		# Ensure that 'cloudy' class is returned
-		self.assertEqual(class_result, 'cloudy')
+		# Checking against the 'cloudy' class at index [1]
+		self.assertEqual(class_result, weather_classes[1])
 
 if __name__ == '__main__':
 	unittest.main()
